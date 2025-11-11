@@ -10,7 +10,7 @@ st.set_page_config(
 )
 
 # --- API URL ---
-BACKEND_URL = "http://127.0.0.1:8000"
+BACKEND_URL = "https://codesense-ai-your-ai-powered-code.onrender.com"
 
 # --- Load CSS ---
 def load_css(file_name):
@@ -112,4 +112,5 @@ else:
                     except requests.ConnectionError:
                         st.error("Could not connect to the backend API. Is it running?")
                     except Exception as e:
+
                         st.error(f"An unknown error occurred: {e}")
