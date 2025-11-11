@@ -118,7 +118,6 @@ with col2:
             st.markdown(st.session_state.review_text)
 
 # --- Improved UI: Stateful Chatbot Popover ---
-st.popover("💬 Chat with AI", use_container_width=True)
 
 with st.popover("💬 Chat with AI", use_container_width=True):
     # 1. Initialize chat history
@@ -169,3 +168,4 @@ with st.popover("💬 Chat with AI", use_container_width=True):
                 st.session_state.popover_messages.append({"role": "assistant", "content": f"Error: {e}"})
         
         st.rerun()
+
