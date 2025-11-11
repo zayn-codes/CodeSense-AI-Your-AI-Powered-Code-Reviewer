@@ -1,0 +1,45 @@
+/* --- Make the layout cleaner and more modern --- */
+.main .block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    max-width: 1200px; /* Limit max width for readability */
+}
+
+/* --- Style the containers to look like "cards" --- */
+div[data-testid="stConnectionStatus"] {
+    display: none; /* Hide the "Running..." spinner top right */
+}
+
+div[data-testid="stMetric"] {
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+}
+
+div[data-testid="stAppViewContainer"] {
+    background-color: #241e1e; /* Clean white background */
+}
+
+div[data-testid="stSidebar"] {
+    background-color: #f8f9fa; /* Light grey sidebar */
+}
+
+/* --- Style buttons --- */
+button[data-testid="stButton"] {
+    font-weight: 500;
+}
+
+button[data-testid="stFormSubmitButton"] {
+    width: 100%;
+    font-weight: 600;
+}
+
+/* --- Style the chat popover button --- */
+/*
+The default st.popover button is difficult to style in a fixed
+position without CSS hacks. We will leave it as-is at the
+bottom of the page flow for stability.
+*/
