@@ -12,7 +12,7 @@ st.set_page_config(
 
 # --- API Base URL ---
 # Assumes the backend is running on the default port 8000
-API_BASE_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
+API_BASE_URL = os.getenv("API_URL", "https://codesense-ai-your-ai-powered-code.onrender.com")
 
 # --- CSS Loader ---
 def load_css(file_name):
@@ -179,4 +179,5 @@ with st.popover("💬 Chat with AI", use_container_width=True):
                 st.session_state.popover_messages.append({"role": "assistant", "content": f"Error: {e}"})
         
         # Rerun to display the new assistant message
+
         st.rerun()
