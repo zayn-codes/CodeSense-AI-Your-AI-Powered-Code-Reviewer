@@ -11,7 +11,7 @@ st.set_page_config(
 )
 
 # --- API Base URL ---
-API_BASE_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
+API_BASE_URL = os.getenv("API_URL", "https://codesense-ai-your-ai-powered-code.onrender.com")
 
 # --- CSS Loader (CORRECTED for this file) ---
 def load_css(file_name):
@@ -103,3 +103,4 @@ with tab2:
                     st.error("Could not connect to the backend. Is it running?")
                 except Exception as e:
                     st.error(f"An unexpected error occurred: {e}")
+
