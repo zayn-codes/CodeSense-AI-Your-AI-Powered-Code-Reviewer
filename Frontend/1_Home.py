@@ -1,79 +1,64 @@
 import streamlit as st
 import os
+from pathlib import Path  # Import Path
 
-# --- Page Config ---
+# --- Page Configuration ---
 st.set_page_config(
-    page_title="AI Code Reviewer",
-    page_icon="🤖",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    page_title="CodeSense-AI Home",
+    page_icon="👋",
+    layout="wide"
 )
 
-# --- Load CSS ---
+# --- CSS Loader (CORRECTED for this file) ---
 def load_css(file_name):
-    """Loads a CSS file from the /frontend directory."""
-    # We are in the frontend/ directory, but script runs from root
-    # So we need to be careful with paths.
-    # Let's assume the script is run from the `frontend` directory.
+    """Loads a CSS file from the 'frontend' directory."""
     try:
-        with open(file_name) as f:
+        # Get the directory of the current file (1_Home.py)
+        # The CSS file is in the same directory.
+        css_path = Path(__file__).parent / file_name
+        with open(css_path) as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
     except FileNotFoundError:
-        st.error(f"Could not find {file_name}. Make sure it's in the frontend/ directory.")
+        st.error(f"Could not find {file_name} at {css_path}. Make sure it's in the 'frontend' directory.")
 
 load_css("style.css")
 
-# --- Initialize Session State ---
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-if "username" not in st.session_state:
-    st.session_state.username = ""
-if "token" not in st.session_state:
-    st.session_state.token = ""
+# --- Page Content ---
 
-# --- Sidebar ---
-st.sidebar.title("Navigation")
-
-if st.session_state.logged_in:
-    st.sidebar.write(f"Logged in as: **{st.session_state.username}**")
-    st.sidebar.page_link("pages/3_Code_Reviewer.py", label="Code Reviewer")
-    st.sidebar.page_link("pages/2_Login.py", label="Logout")
-else:
-    st.sidebar.page_link("pages/2_Login.py", label="Login / Register")
-
-
-# --- Main Page Content ---
-
-st.title("Welcome to the AI Code Reviewer 🤖")
-st.subheader("Your intelligent partner for cleaner, faster, and smarter code.")
+st.title("Welcome to 🤖 CodeSense-AI")
+st.subheader("Your AI-Powered Partner for Better Code")
 
 st.markdown("""
-This tool, powered by Google's Gemini API, helps you write better code by providing
-detailed reviews, documentation analysis, and competitive programming insights.
+CodeSense-AI is a full-stack application designed to help you write cleaner,
+more efficient, and better-documented code.
 """)
 
-col1, col2, col3 = st.columns(3)
+with st.container(border=True):
+    st.header("✨ Features")
+    c1, c2, c3 = st.columns(3)
+    
+    with c1:
+        st.subheader("General Review")
+        st.markdown("Get a comprehensive review of your code for best practices, potential bugs, and logic improvements.")
+        
+    with c2:
+        st.subheader("Documentation Analysis")
+        st.markdown("Check your docstrings and comments for clarity, completeness, and adherence to standards.")
+        
+    with c3:
+        st.subheader("Algorithm Analysis")
+        st.markdown("Submit your competitive programming solutions to get Time and Space Complexity analysis (e.g., O(n log n)).")
 
-with col1:
-    with st.container(border=True, height=250):
-        st.markdown("### 🚀 General Review")
-        st.write("Get a comprehensive review of your code for bugs, readability, and best practices.")
+st.markdown("""
+### 🚀 Get Started
 
-with col2:
-    with st.container(border=True, height=250):
-        st.markdown("### 📚 Doc Review")
-        st.write("Analyze the quality and completeness of your code's documentation.")
+1.  **Register** a new account or **Login** if you're a returning user.
+2.  Navigate to the **Code Reviewer** page.
+3.  Paste your code, select your review type, and get instant AI feedback!
+""")
 
-with col3:
-    with st.container(border=True, height=250):
-        st.markdown("### 🏆 CP Analysis")
-        st.write("Understand the time/space complexity and algorithm of your competitive programming solutions.")
+st.page_link("pages/2_Login.py", label="Login or Register", icon="🔑")
 
-
+# --- Footer ---
 st.markdown("---")
-if st.session_state.logged_in:
-    st.success("You are logged in.")
-    st.page_link("pages/3_Code_Reviewer.py", label="Go to the Code Reviewer", icon="➡️")
-else:
-    st.info("Please **Login** or **Register** to get started.")
-    st.page_link("pages/2_Login.py", label="Login / Register", icon="➡️")
+st.markdown("Built with `FastAPI`, `Streamlit`, and the `Google Gemini API`.")
