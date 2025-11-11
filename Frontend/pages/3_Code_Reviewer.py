@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 from streamlit_ace import st_ace
 import os
+from pathlib import Path  # Import Path
 
 # --- Page Configuration ---
 st.set_page_config(
@@ -11,20 +12,19 @@ st.set_page_config(
 )
 
 # --- API Base URL ---
-# Assumes the backend is running on the default port 8000
-API_BASE_URL = os.getenv("API_URL", "https://codesense-ai-your-ai-powered-code.onrender.com")
+API_BASE_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
 
-# --- CSS Loader ---
+# --- CSS Loader (CORRECTED for this file) ---
 def load_css(file_name):
     """Loads a CSS file from the 'frontend' directory."""
-    # Correct path assumes this script is in 'frontend/pages/'
-    # Go up one level to 'frontend' and find 'style.css'
     try:
-        css_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), file_name)
+        # Get the directory of the current file (e.g., .../frontend/pages)
+        # Go up one level to the 'frontend' directory
+        css_path = Path(__file__).parent.parent / file_name
         with open(css_path) as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
     except FileNotFoundError:
-        st.error(f"Could not find {file_name}. Make sure it's in the 'frontend' directory.")
+        st.error(f"Could not find {file_name} at {css_path}. Make sure it's in the 'frontend' directory.")
 
 load_css("style.css")
 
@@ -69,7 +69,7 @@ with col1:
         "Review Type",
         options=[
             ("General Purpose Review", "general"),
-            ("Code Documentation Review", "documentation"),
+            ("Code Documentation Review", "docs"),
             ("Competitive Programming (Time/Space)", "competitive")
         ],
         format_func=lambda x: x[0]  # Show the friendly name
@@ -99,7 +99,6 @@ with col2:
                     
                     if response.status_code == 200:
                         review_data = response.json()
-                        # FIX 1: The backend model returns "review_content", not "review"
                         st.session_state.review_text = review_data.get("review_content")
                     elif response.status_code == 401:
                         st.error("Authentication failed. Your session may have expired.")
@@ -112,27 +111,23 @@ with col2:
                 except Exception as e:
                     st.error(f"An unexpected error occurred: {e}")
 
-    # --- **IMPROVED UI: Scrollable Review Box** ---
+    # --- Improved UI: Scrollable Review Box ---
     if "review_text" in st.session_state:
         st.subheader("🤖 AI Review")
-        # This creates a bordered container with a fixed height.
-        # If content overflows, it becomes scrollable.
         with st.container(height=525, border=True):
             st.markdown(st.session_state.review_text)
 
-# --- **IMPROVED UI: Stateful Chatbot Popover** ---
-#st.popover("💬 Chat with AI", use_container_width=True)
+# --- Improved UI: Stateful Chatbot Popover ---
+st.popover("💬 Chat with AI", use_container_width=True)
 
 with st.popover("💬 Chat with AI", use_container_width=True):
-    # 1. Initialize chat history in session state
+    # 1. Initialize chat history
     if "popover_messages" not in st.session_state:
         st.session_state.popover_messages = [{"role": "assistant", "content": "How can I help you with your code?"}]
 
-    # 2. Display all past messages
-    # This container will hold the chat history
+    # 2. Display past messages
     with st.container(height=300):
         for msg in st.session_state.popover_messages:
-            # Use custom CSS classes for styling
             if msg["role"] == "user":
                 st.markdown(f"""
                 <div class="chat-message user">
@@ -148,18 +143,14 @@ with st.popover("💬 Chat with AI", use_container_width=True):
 
     # 3. Handle new user input
     if prompt := st.chat_input("Ask a coding question..."):
-        # Add user message to history
         st.session_state.popover_messages.append({"role": "user", "content": prompt})
-        
-        # Rerun to display the user's message immediately
         st.rerun()
 
-    # 4. Generate AI response if the last message was from the user
+    # 4. Generate AI response
     if st.session_state.popover_messages[-1]["role"] == "user":
         with st.spinner("AI is thinking..."):
             try:
                 headers = {"Authorization": f"Bearer {st.session_state['token']}"}
-                # FIX 2: The backend model expects "message", not "query"
                 payload = {"message": st.session_state.popover_messages[-1]["content"]}
                 
                 response = requests.post(
@@ -169,7 +160,6 @@ with st.popover("💬 Chat with AI", use_container_width=True):
                 )
                 
                 if response.status_code == 200:
-                    # FIX 3: The backend model returns "reply", not "response"
                     chat_response = response.json().get("reply")
                     st.session_state.popover_messages.append({"role": "assistant", "content": chat_response})
                 else:
@@ -178,6 +168,4 @@ with st.popover("💬 Chat with AI", use_container_width=True):
             except Exception as e:
                 st.session_state.popover_messages.append({"role": "assistant", "content": f"Error: {e}"})
         
-        # Rerun to display the new assistant message
-
         st.rerun()
