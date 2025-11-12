@@ -145,4 +145,3 @@ This application is configured for deployment on [Render](https://render.com/) a
 ## License
 
 This project is licensed under the MIT License.
-````
