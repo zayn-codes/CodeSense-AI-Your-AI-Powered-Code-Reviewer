@@ -20,7 +20,7 @@ CodeSense-AI is a full-stack web application that leverages the Google Gemini AP
 
 ## 🚀 Tech Stack
 
-* **Frontend:** [Streamlit](https://streamlit.io/)
+* **Frontend:** [Streamlit](https://codesense-ai-your-ai-powered-code-reviewer.streamlit.app/)
 * **Backend:** [FastAPI](https://fastapi.tiangolo.com/)
 * **AI Model:** [Google Gemini](https://ai.google.dev/)
 * **Database:** [SQLite](https://www.sqlite.org/index.html)
