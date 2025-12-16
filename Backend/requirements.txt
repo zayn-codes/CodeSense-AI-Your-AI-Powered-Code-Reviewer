@@ -5,3 +5,4 @@ python-jose[cryptography]
 passlib[argon2]
 google-generativeai
 argon2-cffi
+streamlit-diff-viewer
