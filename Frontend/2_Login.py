@@ -11,7 +11,7 @@ st.set_page_config(
 )
 
 # --- API Base URL ---
-API_BASE_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
+API_BASE_URL = os.getenv("API_URL", "https://codesense-ai-your-ai-powered-code.onrender.com")
 
 # --- CSS Loader ---
 def load_css(file_name):
@@ -114,4 +114,5 @@ with tab2:
 
 # --- Footer Link ---
 st.markdown("---")
+
 st.page_link("1_Home.py", label="Back to Home", icon="🏠")
