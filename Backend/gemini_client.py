@@ -93,7 +93,7 @@ def configure_gemini():
 
 def get_gemini_model():
     """Initializes and returns the Gemini model."""
-    return genai.GenerativeModel('gemini-2.5-flash-preview-09-2025')
+    return genai.GenerativeModel('gemini-3-flash-preview')
 
 def clean_refactored_code(text: str) -> str:
     """Helper to strip markdown code blocks."""
